@@ -12,6 +12,11 @@ else
     sudo apt-get update -yq && sudo apt-get upgrade -yq && \
     sudo apt-get install -yq puppetmaster
 
+    sudo puppet resource cron puppet-agent ensure=present user=root minute=30 \
+        command='/usr/bin/puppet agent --onetime --no-daemonize --splay'
+
+    sudo puppet resource service puppet ensure=running enable=true
+
     # Configure /etc/hosts file
     echo "" | sudo tee --append /etc/hosts 2> /dev/null && \
     echo "# Host config for Puppet Master and Agent Nodes" | sudo tee --append /etc/hosts 2> /dev/null && \
@@ -27,8 +32,10 @@ else
     sudo puppet module install garethr-docker
     sudo puppet module install puppetlabs-git
     sudo puppet module install puppetlabs-vcsrepo
-    sudo puppet module install garystafford-fig
+    sudo puppet module install rtyler/jenkins
 
     # symlink manifest from Vagrant synced folder location
     ln -s /vagrant/site.pp /etc/puppet/manifests/site.pp
+
+    sudo puppet agent --enable
 fi

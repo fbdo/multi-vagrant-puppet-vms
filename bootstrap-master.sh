@@ -12,7 +12,7 @@ else
     sudo apt-get update -yq && sudo apt-get upgrade -yq && \
     sudo apt-get install -yq puppetmaster
 
-    sudo puppet resource cron puppet-agent ensure=present user=root minute=30 \
+    sudo puppet resource cron puppet-agent ensure=present user=root minute=5 \
         command='/usr/bin/puppet agent --onetime --no-daemonize --splay'
 
     sudo puppet resource service puppet ensure=running enable=true
@@ -27,6 +27,10 @@ else
     # Add optional alternate DNS names to /etc/puppet/puppet.conf
     sudo sed -i 's/.*\[main\].*/&\ndns_alt_names = puppet,puppet.example.com/' /etc/puppet/puppet.conf
 
+    # Add the "naive" autosign for all CSRs (don't use in production! Security risks!)
+    sudo sed -i 's/.*\[main\].*/&\nautosign = true/' /etc/puppet/puppet.conf
+
+
     # Install some initial puppet modules on Puppet Master server
     sudo puppet module install puppetlabs-ntp
     sudo puppet module install garethr-docker
@@ -36,6 +40,9 @@ else
 
     # symlink manifest from Vagrant synced folder location
     ln -s /vagrant/site.pp /etc/puppet/manifests/site.pp
+
+    # Add agent section to /etc/puppet/puppet.conf
+    echo "" && echo "[agent]\nserver=puppet" | sudo tee --append /etc/puppet/puppet.conf 2> /dev/null
 
     sudo puppet agent --enable
 fi

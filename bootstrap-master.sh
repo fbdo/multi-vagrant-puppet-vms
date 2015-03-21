@@ -6,11 +6,12 @@ if ps aux | grep "puppet master" | grep -v grep 2> /dev/null
 then
     echo "Puppet Master is already installed. Exiting..."
 else
-    # Install Puppet Master
+    # Install Puppet Master & Agent
     wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb && \
     sudo dpkg -i puppetlabs-release-trusty.deb && \
     sudo apt-get update -yq && sudo apt-get upgrade -yq && \
     sudo apt-get install -yq puppetmaster
+    sudo apt-get install -yq puppet
 
     sudo puppet resource cron puppet-agent ensure=present user=root minute=5 \
         command='/usr/bin/puppet agent --onetime --no-daemonize --splay'

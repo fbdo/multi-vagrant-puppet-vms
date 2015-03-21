@@ -6,7 +6,7 @@ node default {
 }
 
 node 'puppet.example.com' {
-  include jenkins
+  include ntp, git, docker, jenkins
 }
 
 node 'node01.example.com', 'node02.example.com' {

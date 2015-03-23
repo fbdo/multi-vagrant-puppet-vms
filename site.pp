@@ -7,6 +7,17 @@ node default {
 
 node 'puppet.example.com' {
   include ntp, git, docker, jenkins
+
+  jenkins::plugin { 'git': }
+  jenkins::plugin { 'delivery-pipeline-plugin': }
+  jenkins::plugin { 'copyartifact': }
+  jenkins::plugin { 'shared-workspace': }
+  jenkins::plugin { 'dynamicparameter': }
+
+  class { "maven::maven":
+    version => "3.2.1"
+  }
+
 }
 
 node 'node01.example.com', 'node02.example.com' {

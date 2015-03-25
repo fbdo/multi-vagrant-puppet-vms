@@ -18,6 +18,10 @@ node 'puppet.example.com' {
     version => "3.2.1"
   }
 
+  class { 'sonarqube' :
+    version => '3.7.4',
+  }
+
 }
 
 node 'node01.example.com', 'node02.example.com' {

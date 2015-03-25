@@ -39,6 +39,7 @@ else
     sudo puppet module install puppetlabs-vcsrepo
     sudo puppet module install rtyler/jenkins
     sudo puppet module install maestrodev-maven
+    sudo puppet module install maestrodev-sonarqube
 
     # symlink manifest from Vagrant synced folder location
     ln -s /vagrant/site.pp /etc/puppet/manifests/site.pp

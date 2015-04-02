@@ -31,6 +31,9 @@ else
     # Add the "naive" autosign for all CSRs (don't use in production! Security risks!)
     sudo sed -i 's/.*\[main\].*/&\nautosign = true/' /etc/puppet/puppet.conf
 
+    # Mark the agent to start up in the master node
+    sudo sed -i 's/START=no/START=yes/' /etc/default/puppet
+
 
     # Install some initial puppet modules on Puppet Master server
     sudo puppet module install puppetlabs-ntp

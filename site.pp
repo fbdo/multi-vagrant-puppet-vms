@@ -6,7 +6,7 @@ node default {
 }
 
 node 'puppet.example.com' {
-  include ntp, git, docker, jenkins
+  include ntp, git, mercurial, docker, jenkins
 
   jenkins::plugin { 'git': }
   jenkins::plugin { 'delivery-pipeline-plugin': }
